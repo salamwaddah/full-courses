@@ -20,8 +20,9 @@ func main() {
 	serveMux.Handle("/", ph)
 
 	// create a new http server
+	port := ":9090"
 	s := &http.Server{
-		Addr:         ":9090",
+		Addr:         port,
 		Handler:      serveMux,
 		IdleTimeout:  120 * time.Second,
 		ReadTimeout:  1 * time.Second,
@@ -30,6 +31,8 @@ func main() {
 
 	// wrap ListenAndServe in a goroutine, so it doesn't block the graceful shutdown
 	go func() {
+		l.Println("Starting server on port", port)
+
 		err := s.ListenAndServe()
 		if err != nil {
 			l.Fatal(err)
