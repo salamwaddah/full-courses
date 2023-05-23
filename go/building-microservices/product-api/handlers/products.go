@@ -5,14 +5,14 @@ import (
 	"net/http"
 )
 
-type Product struct {
+type Products struct {
 	l *log.Logger
 }
 
-func NewProduct(l *log.Logger) *Product {
-	return &Product{l}
+func NewProducts(l *log.Logger) *Products {
+	return &Products{l}
 }
 
-func (p *Product) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
+func (p *Products) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 
 }
