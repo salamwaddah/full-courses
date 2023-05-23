@@ -8,18 +8,16 @@ import (
 	"os/signal"
 	"time"
 
-	"github.com/salamwaddah/full-courses/go/building-microservices/handlers"
+	"github.com/salamwaddah/full-courses/go/building-microservices/product-api/handlers"
 )
 
 func main() {
 	l := log.New(os.Stdout, "product-api", log.LstdFlags)
 
-	hh := handlers.NewHello(l)
-	gh := handlers.NewGoodBye(l)
+	ph := handlers.NewProducts(l)
 
 	serveMux := http.NewServeMux()
-	serveMux.Handle("/", hh)
-	serveMux.Handle("/goodbye", gh)
+	serveMux.Handle("/", ph)
 
 	// create a new http server
 	s := &http.Server{
