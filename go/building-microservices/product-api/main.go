@@ -8,16 +8,21 @@ import (
 	"os/signal"
 	"time"
 
+	"github.com/gorilla/mux"
 	"github.com/salamwaddah/full-courses/go/building-microservices/product-api/handlers"
 )
 
 func main() {
 	l := log.New(os.Stdout, "product-api", log.LstdFlags)
 
+	// create the handlers
 	ph := handlers.NewProducts(l)
 
-	serveMux := http.NewServeMux()
-	serveMux.Handle("/", ph)
+	// create a serve mux
+	serveMux := mux.NewRouter()
+
+	getRouter := serveMux.Methods("GET").Subrouter()
+	getRouter.HandleFunc("/", ph.ServeHTTP)
 
 	// create a new http server
 	port := ":9090"
