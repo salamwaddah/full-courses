@@ -69,6 +69,7 @@ func GetProducts() Products {
 	return productList
 }
 
+// productList hard coded list of products, serves as a data source
 var productList = Products{
 	&Product{
 		ID:          1,
