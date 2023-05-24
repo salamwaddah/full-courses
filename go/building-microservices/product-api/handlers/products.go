@@ -3,6 +3,8 @@ package handlers
 import (
 	"log"
 	"net/http"
+	"regexp"
+	"strconv"
 
 	"github.com/salamwaddah/full-courses/go/building-microservices/product-api/data"
 )
@@ -28,6 +30,34 @@ func (p *Products) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	}
 
 	// handle an update
+	if r.Method == http.MethodPut {
+		// expect the ID in the URI
+		reg := regexp.MustCompile(`/([0-9]+)`)
+		g := reg.FindAllStringSubmatch(r.URL.Path, -1)
+
+		if len(g) != 1 {
+			p.l.Println("Invalid URI: more than one ID")
+			http.Error(rw, "Invalid URI", http.StatusBadRequest)
+			return
+		}
+
+		if len(g[0]) != 2 {
+			p.l.Println("Invalid URI: more than one capture group")
+			http.Error(rw, "Invalid URI", http.StatusBadRequest)
+			return
+		}
+
+		idString := g[0][1]
+
+		id, err := strconv.Atoi(idString)
+		if err != nil {
+			p.l.Println("Invalid URI: could not convert ID to number")
+			http.Error(rw, "Invalid URI", http.StatusBadRequest)
+			return
+		}
+
+		p.l.Println("Got id", id)
+	}
 
 	// catch all
 	rw.WriteHeader(http.StatusMethodNotAllowed)
