@@ -21,8 +21,14 @@ func main() {
 	// create a serve mux
 	serveMux := mux.NewRouter()
 
-	getRouter := serveMux.Methods("GET").Subrouter()
-	getRouter.HandleFunc("/", ph.ServeHTTP)
+	getRouter := serveMux.Methods(http.MethodGet).Subrouter()
+	getRouter.HandleFunc("/", ph.GetProducts)
+
+	postRouter := serveMux.Methods(http.MethodPost).Subrouter()
+	postRouter.HandleFunc("/", ph.AddProduct)
+
+	putRouter := serveMux.Methods(http.MethodPut).Subrouter()
+	putRouter.HandleFunc("/{id:[0-9]+}", ph.UpdateProduct)
 
 	// create a new http server
 	port := ":9090"
